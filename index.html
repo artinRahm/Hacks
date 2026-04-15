@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BREACHED.REPORT — Latest Hacks & Data Leaks</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Scanline overlay -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">BREACHED<span class="logo-dot">.</span>REPORT</span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#feed" class="nav-link active">FEED</a>
+        <a href="#check" class="nav-link">CHECK EMAIL</a>
+        <a href="#admin" class="nav-link admin-link">+ SUBMIT</a>
+      </nav>
+      <div class="status-bar">
+        <span class="status-dot"></span>
+        <span id="breach-count">0</span> BREACHES TRACKED
+      </div>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">Loading breach data...</div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero / Stats -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="stat-card">
+          <div class="stat-label">TOTAL RECORDS EXPOSED</div>
+          <div class="stat-value" id="total-records">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">BREACHES THIS MONTH</div>
+          <div class="stat-value" id="month-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">MOST RECENT</div>
+          <div class="stat-value sm" id="most-recent">—</div>
+        </div>
+        <div class="stat-card critical">
+          <div class="stat-label">CRITICAL SEVERITY</div>
+          <div class="stat-value" id="critical-count">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Email Check -->
+    <section class="email-check" id="check">
+      <div class="section-header">
+        <span class="section-tag">// CHECK YOUR EXPOSURE</span>
+      </div>
+      <div class="check-form">
+        <input type="email" id="email-input" placeholder="enter your email address..." autocomplete="off" spellcheck="false" />
+        <button id="check-btn" onclick="checkEmail()">SCAN</button>
+      </div>
+      <div id="check-result" class="check-result hidden"></div>
+    </section>
+
+    <!-- Breach Feed -->
+    <section class="breach-feed" id="feed">
+      <div class="section-header">
+        <span class="section-tag">// LATEST BREACH REPORTS</span>
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterBreaches('all', this)">ALL</button>
+          <button class="filter-btn" onclick="filterBreaches('critical', this)">CRITICAL</button>
+          <button class="filter-btn" onclick="filterBreaches('high', this)">HIGH</button>
+          <button class="filter-btn" onclick="filterBreaches('medium', this)">MEDIUM</button>
+          <button class="filter-btn" onclick="filterBreaches('gaming', this)">GAMING</button>
+          <button class="filter-btn" onclick="filterBreaches('financial', this)">FINANCIAL</button>
+        </div>
+      </div>
+      <div class="breach-list" id="breach-list">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section class="admin-panel" id="admin">
+      <div class="section-header">
+        <span class="section-tag">// SUBMIT A BREACH REPORT</span>
+      </div>
+      <div class="admin-form-wrap">
+        <div class="admin-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>BREACH NAME *</label>
+              <input type="text" id="f-name" placeholder="e.g. GTA Online Money Exploit" />
+            </div>
+            <div class="form-group">
+              <label>ORGANIZATION / PLATFORM *</label>
+              <input type="text" id="f-org" placeholder="e.g. Rockstar Games" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>DATE DISCOVERED</label>
+              <input type="date" id="f-date" />
+            </div>
+            <div class="form-group">
+              <label>RECORDS EXPOSED</label>
+              <input type="text" id="f-records" placeholder="e.g. 5,000,000 or Unknown" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>SEVERITY</label>
+              <select id="f-severity">
+                <option value="critical">CRITICAL</option>
+                <option value="high">HIGH</option>
+                <option value="medium" selected>MEDIUM</option>
+                <option value="low">LOW</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>CATEGORY</label>
+              <select id="f-category">
+                <option value="gaming">Gaming</option>
+                <option value="financial">Financial</option>
+                <option value="social">Social Media</option>
+                <option value="government">Government</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="tech">Technology</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>DATA EXPOSED (comma separated)</label>
+            <input type="text" id="f-datatypes" placeholder="e.g. Emails, Passwords, In-game Currency, IP Addresses" />
+          </div>
+          <div class="form-group full">
+            <label>DESCRIPTION *</label>
+            <textarea id="f-desc" rows="4" placeholder="Describe what happened, how it was discovered, and the public impact..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>SOURCE URL (optional)</label>
+            <input type="url" id="f-source" placeholder="https://..." />
+          </div>
+          <div class="form-actions">
+            <button class="submit-btn" onclick="submitBreach()">SUBMIT REPORT</button>
+            <span id="form-msg" class="form-msg"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>BREACHED.REPORT — Public breach data only. All information sourced from public disclosures.</span>
+      <span class="footer-note">Not affiliated with any breach victims. For educational awareness only.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
